@@ -89,11 +89,11 @@
 
 <p><strong>sortBy (attribute:string, order: "&lt;" || "&gt;")</strong>: returns every model by attribute value in ascending or descending order</p>
 
-<p>*<em>getWhere (attribute:string, value) *</em>: returns every model in collection where attribute === value</p>
+<p><strong>getWhere (attribute:string, value)</strong>: returns every model in collection where attribute === value</p>
 
 <p><strong>setWhere(attribute: string, oldValue, value)</strong> : sets an attribute to value where it used to be oldValue</p>
 
-<p>*<em>deleteWhere (attribute: string, value) *</em>: Deletes all models in collection where attribute === value</p>
+<p><strong>deleteWhere (attribute: string, value)</strong>: Deletes all models in collection where attribute === value</p>
 
 <p><strong>toJSON</strong>: returns every model in collection as json</p>
 
@@ -123,15 +123,15 @@
 
 <div class="highlight highlight-source-js"><pre><span class="pl-k">new</span> <span class="pl-en">Nuff.Router</span>();</pre></div>
 
-<p>*<em>register (_route: string, callback: function, [ scope: object, listen: bool]) *</em>: Registers a new route from a string and associates a callback function. If scope is defined callback will be associated to it. If listen is defined, the callback will trigger onhashchange.</p>
+<p><strong>register (_route: string, callback: function, [ scope: object, listen: bool])</strong>: Registers a new route from a string and associates a callback function. If scope is defined callback will be associated to it. If listen is defined, the callback will trigger onhashchange.</p>
 
-<p>*<em>unregister(_route: string)</em> *: removes route</p>
+<p><strong>unregister(_route: string)</strong>: removes route</p>
 
-<p>*<em>listen(_route: string) *</em>: binds Route callback to the onhashchange event</p>
+<p><strong>listen(_route: string)</strong>: binds Route callback to the onhashchange event</p>
 
-<p>*<em>removeListener(_route: string) *</em>: unbinds onhashchange from the Route callback</p>
+<p><strong>removeListener(_route: string)</strong>: unbinds onhashchange from the Route callback</p>
 
-<p>**setRoute(_route:string, _silent: bool) *: Changes active hash, if silent is true then doesn't fire callbacks on hashchange</p>
+<p><strong>setRoute(_route:string, _silent: bool)</strong>: Changes active hash, if silent is true then doesn't fire callbacks on hashchange</p>
 
 <h4>
 <a id="validator" class="anchor" href="#validator" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>Validator</strong>
