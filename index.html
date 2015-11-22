@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Nuff.js by relik</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Nuff.js</h1>
+          <h2>A simple JS framework</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/relik/Nuff.js/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/relik/Nuff.js/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/relik/Nuff.js" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h2>
+<a id="nuffjs" class="anchor" href="#nuffjs" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>Nuff.js</strong>
+</h2>
+
+<p>The idea behind this project is to provide a simple Model Presenter pattern to use in combination with a view framework or native js. It contains simple components such as a Router, a data Validator, Presenters, Models, Collections  and a Dispatcher. Provided alongside the project is a simple example of a todo list using React.</p>
+
+<h4>
+<a id="presenter" class="anchor" href="#presenter" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>Presenter</strong>
+</h4>
+
+<div class="highlight highlight-source-js"><pre>    <span class="pl-k">var</span> todo <span class="pl-k">=</span> Nuff.Presenter({
+      <span class="pl-en">init</span><span class="pl-k">:</span> <span class="pl-k">function</span>() { }
+    });</pre></div>
+
+<p><strong>init</strong>: The init function is made to be overridden by the developper. It will be launched upon instantiation.</p>
+
+<p><strong>mapViewFunctions (view: object, functions: array, scope: object)</strong>: Attaches each Presenter function in the functions array to the view object. Binds scope to these functions if it is provided.</p>
+
+<hr>
+
+<h4>
+<a id="model" class="anchor" href="#model" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>Model</strong>
+</h4>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> Todo <span class="pl-k">=</span> Nuff.Model(<span class="pl-s"><span class="pl-pds">'</span>Todo<span class="pl-pds">'</span></span>, {
+    attributes<span class="pl-k">:</span> {
+        done<span class="pl-k">:</span> <span class="pl-c1">false</span>,
+        text<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
+    },
+    <span class="pl-en">init</span><span class="pl-k">:</span> <span class="pl-k">function</span>() { }
+});</pre></div>
+
+<p><strong>set (object) || (attribute: string, value)</strong>: Set the model's attributes object either by extending it with an object or by specifying an attribute and value.</p>
+
+<p><strong>get( [attribute: string])</strong> : returns a single attribute or all of the objects attributes</p>
+
+<p><strong>has(attribute: string)</strong>: return true if provided attribute is set for this model</p>
+
+<p>*<em>attributeIs (attribute: string, validatorType)</em> *: Can be used in conjonction with the Nuff Validator to validate a ValidatorType (a RegExp or a pattern defined in the Validator regex object).</p>
+
+<p><em>request (object: object)</em> : makes an ajax request using the Nuff.ajax function</p>
+
+<hr>
+
+<h4>
+<a id="collection" class="anchor" href="#collection" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>Collection</strong>
+</h4>
+
+<p>A collection is an array that is extended with helper functions. It verifies that values push are instances of the collection's model attribute.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> Todos <span class="pl-k">=</span> Nuff.Collection({
+    model<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Todo<span class="pl-pds">"</span></span>
+});</pre></div>
+
+<p><strong>push(model)</strong>: Adds every model provided to the Collection and verifies they are the right type of object</p>
+
+<p><strong>sortBy (attribute:string, order: "&lt;" || "&gt;")</strong>: returns every model by attribute value in ascending or descending order</p>
+
+<p>*<em>getWhere (attribute:string, value) *</em>: returns every model in collection where attribute === value</p>
+
+<p><strong>setWhere(attribute: string, oldValue, value)</strong> : sets an attribute to value where it used to be oldValue</p>
+
+<p>*<em>deleteWhere (attribute: string, value) *</em>: Deletes all models in collection where attribute === value</p>
+
+<p><strong>toJSON</strong>: returns every model in collection as json</p>
+
+<hr>
+
+<h4>
+<a id="dispatcher" class="anchor" href="#dispatcher" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>Dispatcher</strong>
+</h4>
+
+<p>The dispatcher is a simple component that allows registering of callbacks with strings.</p>
+
+<p>*<em>register (action: string, callback: function) *</em>: Associates a callback with an action string.</p>
+
+<p><strong>unregister (action: string, callback: function)</strong> : Removes a callback action string association</p>
+
+<p><strong>dispatch (action:string)</strong> : Activates all callbacks associated to an action string</p>
+
+<p><strong>list (action: string)</strong> :ogs all callbacks associated to an action string</p>
+
+<div class="highlight highlight-source-js"><pre>    <span class="pl-k">new</span> <span class="pl-en">Nuff.Dispatcher</span>();</pre></div>
+
+<h4>
+<a id="router-" class="anchor" href="#router-" aria-hidden="true"><span class="octicon octicon-link"></span></a>*<em>Router *</em>
+</h4>
+
+<p>The router allows to bind hashes to callbacks, parameters are passed by slashes and returned as arguments to the callbacks.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">new</span> <span class="pl-en">Nuff.Router</span>();</pre></div>
+
+<p>*<em>register (_route: string, callback: function, [ scope: object, listen: bool]) *</em>: Registers a new route from a string and associates a callback function. If scope is defined callback will be associated to it. If listen is defined, the callback will trigger onhashchange.</p>
+
+<p>*<em>unregister(_route: string)</em> *: removes route</p>
+
+<p>*<em>listen(_route: string) *</em>: binds Route callback to the onhashchange event</p>
+
+<p>*<em>removeListener(_route: string) *</em>: unbinds onhashchange from the Route callback</p>
+
+<p>**setRoute(_route:string, _silent: bool) *: Changes active hash, if silent is true then doesn't fire callbacks on hashchange</p>
+
+<h4>
+<a id="validator" class="anchor" href="#validator" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>Validator</strong>
+</h4>
+
+<p>The validator is a simple tool to centralize type validation, it binds regex and tests values against them.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">new</span> <span class="pl-en">Nuff.Validator</span>();</pre></div>
+
+<p>*<em>set(object: object) *</em>: overrides the regex object of the validator with customized RegExp,</p>
+
+<p><strong>validate(type: string || RegExp, value)</strong> : Checks if value matchs provided type in the set regex object or if it matches a provided regexp.</p>
+        </section>
+
+        <footer>
+          Nuff.js is maintained by <a href="https://github.com/relik">relik</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
