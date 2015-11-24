@@ -4,7 +4,7 @@ The idea behind this project is to provide a simple Model Presenter pattern to u
 
 ### **Distinctive patterns** ###
 
-Nuff tries to provide flexibility however it's intended pattern is a loose interpretation of the Model View Presenter pattern. Views declare an array of presenterMethods they depend on. They then instantiate a presenter with the view as argument. This allows the Nuff presenter to bind the targeter Presenter methods to the view. Here is an exemple of a React view's *getInitialState* instantiating a presenter and bind methods.
+Nuff tries to provide flexibility however it's intended pattern is a loose interpretation of the Model View Presenter pattern. Views declare an array of presenterMethods they depend on. They then instantiate a presenter with the view as argument. This allows the Nuff presenter to bind the target Presenter methods to the view. Here is an exemple of a React view's *getInitialState* instantiating a presenter and binding methods.
 ```javascript
 getInitialState: function() {
 
