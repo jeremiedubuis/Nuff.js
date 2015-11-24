@@ -61,8 +61,8 @@ var Model = function (_name, _extended) {
         },
 
         attributeIs: function(attribute, validatorType) {
-            if (!registeredValidator) registeredValidator = new Validator();
-            return registeredValidator.validate(validatorType, this.attributes[attribute]);
+            var _validator = Nuff.Validator();
+            return _validator.validate(validatorType, this.attributes[attribute]);
         },
 
         /**

@@ -1,12 +1,8 @@
-// Holds a reference to the registered Dispatcher
-var registeredValidator;
 
 /**
   * @desc Validator is a singleton that allows to validate data from RegExp that can be overriden
 */
 var Validator = function() {
-
-    if (registeredValidator) return registeredValidator;
 
     this.regex = {
         alphanumeric : /^[a-zA-Z0-9áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ._\s-]+$/,
@@ -14,8 +10,6 @@ var Validator = function() {
         alpha: /^[a-zA-ZÁÀÂÃÄÉÈËÍÌÎÏÓÒÔÚÙáàãâéèíìîóòúùûü]+$/,
         email: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     };
-
-    registeredValidator = this;
 };
 
 Validator.prototype = {
@@ -54,4 +48,13 @@ Validator.prototype = {
 
 };
 
-Nuff.Validator = Validator;
+// Holds a reference to the registered Dispatcher
+var registeredValidator;
+
+Nuff.Validator = function() {
+
+    if (!registeredValidator) registeredValidator = new Validator();
+
+    return registeredValidator;
+
+};

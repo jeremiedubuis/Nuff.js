@@ -104,7 +104,7 @@ new Nuff.Router();
 The validator is a simple tool to centralize type validation, it binds regex and tests values against them.
 
 ```javascript
-new Nuff.Validator();
+var _validator = Nuff.Validator();
 ```
 
 **set(object: object) **: overrides the regex object of the validator with customized RegExp,
