@@ -153,9 +153,7 @@ var registeredDispatcher;
   * @desc The Dispatcher is a singleton that registers callbacks to be executed on a string dispatch
 */
 var Dispatcher = function() {
-    if (registeredDispatcher) return registeredDispatcher;
     this.actions = [];
-    registeredDispatcher = this;
 };
 
 Dispatcher.prototype = {
@@ -215,7 +213,10 @@ Dispatcher.prototype = {
 
 };
 
-Nuff.Dispatcher = Dispatcher;
+Nuff.Dispatcher = function() {
+    if (!registeredDispatcher) registeredDispatcher = new Dispatcher();
+    return registeredDispatcher;
+};
 
 
 
@@ -226,9 +227,7 @@ Nuff.Dispatcher = Dispatcher;
   * @param _action(string)
 */
 var _dispatch = function(_action) {
-
-    if (!registeredDispatcher) new Dispatcher();
-    registeredDispatcher.dispatch(_action);
+    Nuff.Dispatcher().dispatch(_action);
 
 };
 
@@ -239,16 +238,10 @@ var _dispatch = function(_action) {
 */
 var _onDispatch = function(_action, callback) {
 
-    if (!registeredDispatcher) {
-
-        registeredDispatcher = new Dispatcher();
-
-    }
-
     if (!this._actions[_action]) this._actions[_action] = [];
 
     this._actions[_action].push(callback)
-    registeredDispatcher.register(_action, callback);
+    Nuff.Dispatcher().register(_action, callback);
 
     return this;
 
