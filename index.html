@@ -35,7 +35,31 @@
 <a id="nuffjs" class="anchor" href="#nuffjs" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>Nuff.js</strong>
 </h2>
 
-<p>The idea behind this project is to provide a simple Model Presenter pattern to use in combination with a view framework or native js. It contains simple components such as a Router, a data Validator, Presenters, Models, Collections  and a Dispatcher. Provided alongside the project is a simple example of a todo list using React.</p>
+<p>The idea behind this project is to provide a simple Model Presenter pattern to use in combination with a view framework or native js.  Provided alongside the project is a simple example of a todo list using React as view management framework.</p>
+
+<h3>
+<a id="distinctive-patterns" class="anchor" href="#distinctive-patterns" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>Distinctive patterns</strong>
+</h3>
+
+<p>Nuff tries to provide flexibility however it's intended pattern is a loose interpretation of the Model View Presenter pattern. Views declare an array of presenterMethods they depend on. They then instantiate a presenter with the view as argument. This allows the Nuff presenter to bind the targeter Presenter methods to the view. Here is an exemple of a React view's <em>getInitialState</em> instantiating a presenter and bind methods.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">getInitialState</span><span class="pl-k">:</span> <span class="pl-k">function</span>() {
+
+    <span class="pl-smi">this</span>.<span class="pl-smi">presenterMethods</span> <span class="pl-k">=</span> [<span class="pl-s"><span class="pl-pds">"</span>taskDone<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>add<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>delete<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>deleteDone<span class="pl-pds">"</span></span>];
+
+    <span class="pl-k">return</span> {
+        list<span class="pl-k">:</span> [],
+        presenter<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">presenter</span>(<span class="pl-v">this</span>)
+    };
+},</pre></div>
+
+<p>This separation of concerns allows for several views to share the same presenter but also an increased modularity of the architecture behind views. In our Todo application, the view declares its array of presenter methods. These methods are direct interactions with the collection of Todos that the application implements. This allows a separation of concern between view (handles actions that it binds to presenter methods), presenter (transfers user input to models and returns data to the view) and models (handles data requests from presenters and sends a result back to the presenter and view).</p>
+
+<h3>
+<a id="components" class="anchor" href="#components" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>Components</strong>
+</h3>
+
+<p>Nuff contains simple components such as a Router, a data Validator, Presenters, Models, Collections  and a Dispatcher.</p>
 
 <h4>
 <a id="presenter" class="anchor" href="#presenter" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>Presenter</strong>
