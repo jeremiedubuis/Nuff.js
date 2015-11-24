@@ -13,7 +13,7 @@ var Nuff = function() {
 /**
   * @desc An XMLHttpRequest wrapper
   * @param object {
-  *    method (string) : "POST" || "GET" || "PUT" || "UPDATE" || "DELETE"
+  *    method (string) : 'POST' || 'GET' || 'PUT' || 'UPDATE' || 'DELETE'
   *    url (string) : the resource to reach
   *    onSuccess (xhr, response) : success callback
   *    onFailure (xhr) : failure callback
@@ -23,13 +23,13 @@ var Nuff = function() {
 
 var ajax = Nuff.ajax = function(object) {
 
-    var _method = object.method.toUpperCase() || "GET";
+    var _method = object.method.toUpperCase() || 'GET';
     var _url = object.url;
     var _onSuccess = object.onSuccess || function() {};
     var _onFailure = object.onFailure || function() {};
 
-    if (_method === "GET" && object.data) {
-        _url= _url+"?"+object.data;
+    if (_method === 'GET' && object.data) {
+        _url= _url+'?'+object.data;
         delete object.data;
     }
 
@@ -37,7 +37,7 @@ var ajax = Nuff.ajax = function(object) {
     xhr.open(_method, _url, true);
 
     if (object.contentType) {
-        xhr.setRequestHeader("Content-type", object.contentType);
+        xhr.setRequestHeader('Content-type', object.contentType);
     }
 
     xhr.onreadystatechange = function () {
@@ -167,7 +167,7 @@ Dispatcher.prototype = {
     */
     register: function(action, callback) {
 
-        if (typeof callback !== "function") throw new Error('Dispatcher-> register() requires both string and callback');
+        if (typeof callback !== 'function') throw new Error('Dispatcher-> register() requires both string and callback');
 
         if (!this.actions[action]) this.actions[action] = [callback];
         else this.actions[action].push(callback);
@@ -180,7 +180,7 @@ Dispatcher.prototype = {
       * @param callback (function)
     */
     unregister: function(action, callback) {
-        if (!this.actions[action]) throw new Error("Dispatcher->"+action+" is undefined");
+        if (!this.actions[action]) throw new Error('Dispatcher->'+action+' is undefined');
 
         if (!callback) this.actions[action] = [];
 
@@ -196,7 +196,7 @@ Dispatcher.prototype = {
 
         if (this.actions[action]) {
             this.actions[action].forEach(function(_action) {
-                if (typeof _action === "function") _action();
+                if (typeof _action === 'function') _action();
             });
         }
 
@@ -207,7 +207,7 @@ Dispatcher.prototype = {
       * @param action (string)
     */
     list: function(action) {
-        console.log("Dispatcher->"+action+"-> Callbacks :");
+        console.log('Dispatcher->'+action+'-> Callbacks :');
         this.actions[action].forEach(function(_action) {
             console.log(_action);
         });
@@ -286,22 +286,22 @@ var Router = function() {
 
 Router.prototype = {
 
-    register: function(_route, callback, scope, listen) {
-        if (_route && typeof callback==="function") {
+    register: function(route, callback, scope, listen) {
+        if (route && typeof callback==='function') {
 
-            if (!this.routes[_route]) {
+            if (!this.routes[route]) {
 
-                this.routes[_route] = {
+                this.routes[route] = {
                     callback: callback,
                     scope: scope || this
                 };
 
-                if (listen) this.listen(_route);
+                if (listen) this.listen(route);
 
                 return this;
 
             } else {
-                throw new Error('Router-register() '+_route+' route is already defined');
+                throw new Error('Router-register() '+route+' route is already defined');
             }
 
         } else {
@@ -309,11 +309,11 @@ Router.prototype = {
         }
     },
 
-    listen: function(_route) {
+    listen: function(route) {
 
         var _this = this;
 
-        var _baseRoute = _route.split('/').shift();
+        var _baseRoute = route.split('/').shift();
         this.eventListeners.push(function() {
             var _hash = window.location.hash.replace('#','');
             if (_hash.split('/').shift() === _baseRoute) {
@@ -322,32 +322,32 @@ Router.prototype = {
         });
         var _index = this.eventListeners.length-1;
         this.routes[_baseRoute].listenerIndex = _index
-        window.addEventListener("hashchange", this.eventListeners[_index]);
+        window.addEventListener('hashchange', this.eventListeners[_index]);
 
     },
 
-    removeListener: function(_route) {
-        var _index = this.routes[_route].listenerIndex;
-        window.removeEventListener("hashchange", this.eventListeners[_index]);
+    removeListener: function(route) {
+        var _index = this.routes[route].listenerIndex;
+        window.removeEventListener('hashchange', this.eventListeners[_index]);
         this.eventListeners.splice(_index, 1);
     },
 
-    unregister: function(_route) {
-        delete this.routes[_route];
+    unregister: function(route) {
+        delete this.routes[route];
         return this;
     },
 
-    setRoute: function(_route, _silent) {
+    setRoute: function(route, _silent) {
 
-        window.location.hash = _route;
-        var _routeParts = _route.split('/');
-        _route = _routeParts[0];
+        window.location.hash = route;
+        var routeParts = route.split('/');
+        route = routeParts[0];
 
-        if (!this.routes[_route]) throw new Error('Router->setRoute() '+_route+' is undefined');
+        if (!this.routes[route]) throw new Error('Router->setRoute() '+route+' is undefined');
         else {
 
             if (!_silent) {
-                this.routes[_route].callback.apply(this.routes[_route].scope, _routeParts);
+                this.routes[route].callback.apply(this.routes[route].scope, routeParts);
             }
 
             return this;
@@ -364,19 +364,19 @@ Nuff.Router = Router;
            it stores its data in an attributes object andevery model declared is stored in a
            Nuff.models array for checking model instanceof in Collections fo rexample
   * @param name (string): holds the model's name for further reference
-  * @param _extended (object): holds data that will extend Model functionnality, all functions
+  * @param extended (object): holds data that will extend Model functionnality, all functions
            will be added to object prototype whereas values will be added to object itself
 */
-var Model = function (_name, _extended) {
+var Model = function (name, extended) {
 
      var _Constructor = function(_options) {
 
-        for (var _key in _extended) {
-            if (typeof _extended[_key] === "function") _Constructor.prototype[_key] = _extended[_key];
-            else _Constructor[_key] = _extended[_key];
+        for (var key in extended) {
+            if (typeof extended[key] === 'function') _Constructor.prototype[key] = extended[key];
+            else _Constructor[key] = extended[key];
         }
 
-        this._name = _name;
+        this.name = name;
         this._actions = {};
         this.attributes = {};
         this.set(_options);
@@ -396,9 +396,9 @@ var Model = function (_name, _extended) {
           * @param value (multitype) the value to set for a given attribute string
         */
         set: function(_data) {
-            if (typeof _data === "object")
+            if (typeof _data === 'object')
                 extend(this.attributes, _data);
-            else if (typeof _data === "string" && arguments.length>1) {
+            else if (typeof _data === 'string' && arguments.length>1) {
                 this.attributes[_data] = arguments[1];
             }
 
@@ -418,7 +418,7 @@ var Model = function (_name, _extended) {
           * @param attribute (string)
         */
         has: function(attribute) {
-            return typeof this.attributes[attribute] !== "undefined";
+            return typeof this.attributes[attribute] !== 'undefined';
         },
 
         attributeIs: function(attribute, validatorType) {
@@ -452,7 +452,7 @@ var Model = function (_name, _extended) {
 
     };
 
-    Nuff.models[_name] = _Constructor;
+    Nuff.models[name] = _Constructor;
 
     return _Constructor;
 
@@ -468,16 +468,16 @@ Nuff.Model = Model;
   * @param _extended (object): holds data and functions that will extend Collection functionnality
                                also holds model string reference for model type checking
 */
-var Collection = Nuff.Collection  = function(_extended) {
+var Collection = Nuff.Collection  = function(extended) {
 
 
-    var _Constructor =function() {
+    var _Constructor = function() {
 
-        if (!_extended.model || !Nuff.models[_extended.model]) throw new Error('Collection->model must be a valid Nuff.Model');
+        if (!extended.model || !Nuff.models[extended.model]) throw new Error('Collection->model must be a valid Nuff.Model');
 
         var _Collection = new Array();
 
-        extend (_Collection, _extended)
+        extend (_Collection, extended)
 
         /**
           * @desc Returns elements where Model.attributes.attribute is equal to value
@@ -502,7 +502,7 @@ var Collection = Nuff.Collection  = function(_extended) {
             */
             push: function() {
                 for (var i = 0, j = arguments.length; i<j; ++i) {
-                    if (!arguments[i] instanceof Nuff.models[_extended.model]) throw new Error('Collection->push must provide valid Nuff.Models');
+                    if (!arguments[i] instanceof Nuff.models[extended.model]) throw new Error('Collection->push must provide valid Nuff.Models');
                 }
                 return Array.prototype.push.apply(this,arguments);
             },
@@ -510,12 +510,12 @@ var Collection = Nuff.Collection  = function(_extended) {
             /**
               * @desc Sorts models in collection by attribute
               * @param attribute string
-              * @param order ">" || "<"
+              * @param order '>' || '<'
             */
             sortBy: function(attribute, order) {
                 if (_Collection[0]) {
 
-                    if (typeof _Collection[0].attributes[attribute] === "string") {
+                    if (typeof _Collection[0].attributes[attribute] === 'string') {
                         _Collection.sort(function(a,b) {
                             if(a.attributes[attribute] < b.attributes[attribute]) return -1;
                             if(a.attributes[attribute] > b.attributes[attribute]) return 1;
@@ -527,7 +527,7 @@ var Collection = Nuff.Collection  = function(_extended) {
                         });
                     }
 
-                    if (order === "<") return this;
+                    if (order === '<') return this;
                     else return _Collection.reverse();
 
                 }
@@ -546,7 +546,7 @@ var Collection = Nuff.Collection  = function(_extended) {
             },
 
             /**
-              * @desc Sets all models "attributeToset" to "value" in collection where "attribute" === "oldValue"
+              * @desc Sets all models 'attributeToset' to 'value' in collection where 'attribute' === 'oldValue'
               * @param attribute (string)
               * @param oldvalue
               * @param attributeToSet (string)
@@ -555,7 +555,7 @@ var Collection = Nuff.Collection  = function(_extended) {
             setWhere: function(attribute, oldValue, attributeToSet, value) {
 
 
-                if (typeof value === "undefined") {
+                if (typeof value === 'undefined') {
                     value = attributeToSet;
                     attributeToSet = attribute;
                 }
@@ -578,7 +578,7 @@ var Collection = Nuff.Collection  = function(_extended) {
             */
             deleteWhere: function(attribute, value) {
 
-                if (attribute==="index") {
+                if (attribute==='index') {
                     _Collection[value].destroy();
                     _Collection.splice(value, 1);
                 } else {
@@ -597,8 +597,8 @@ var Collection = Nuff.Collection  = function(_extended) {
             */
             toJSON: function() {
                 var _json = [];
-                _Collection.forEach(function(_model) {
-                    _json.push(_model.get());
+                _Collection.forEach(function(model) {
+                    _json.push(model.get());
                 });
                 return _json;
             },
@@ -610,28 +610,28 @@ var Collection = Nuff.Collection  = function(_extended) {
 
         extend (_Collection, _methods);
 
-        if (_extended.values) _Collection.push.apply(this, _extended.values);
+        if (extended.values) _Collection.push.apply(this, extended.values);
 
         return _Collection;
-        
+
     };
 
     return _Constructor;
 };
 
-var Presenter = function(_extended) {
+var Presenter = function(extended) {
 
     var _Constructor = function(options) {
 
-        for (var _key in _extended) {
-            if (typeof _extended[_key] === "function") _Constructor.prototype[_key] = _extended[_key];
-            else _Constructor[_key] = _extended[_key];
+        for (var key in extended) {
+            if (typeof extended[key] === 'function') _Constructor.prototype[key] = extended[key];
+            else _Constructor[key] = extended[key];
         }
 
         this._actions = {};
 
 
-        if (typeof options === "object" && options.presenterMethods) this.mapViewFunctions(options, options.presenterMethods, options.presenterMethodsScope || this);
+        if (typeof options === 'object' && options.presenterMethods) this.mapViewFunctions(options, options.presenterMethods, options.presenterMethodsScope || this);
         this.init(options);
     };
 
@@ -641,18 +641,18 @@ var Presenter = function(_extended) {
 
         },
 
-        mapViewFunctions: function(_view, _functions, scope) {
+        mapViewFunctions: function(view, functions, scope) {
             var _this = this;
 
-            _functions.forEach(function(fn) {
-                if (typeof _this[fn] === "function") {
-                    _view[fn] = scope ? _this[fn].bind(scope) : _this[fn] ;
+            functions.forEach(function(fn) {
+                if (typeof _this[fn] === 'function') {
+                    view[fn] = scope ? _this[fn].bind(scope) : _this[fn] ;
                 } else {
                     throw new Error('Presenter->mapViewFunctions() requires an array of functions associated with a view, '+fn+' is not a valid method of presenter instance');
                 }
             });
 
-            return _view;
+            return view;
         },
 
 

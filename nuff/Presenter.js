@@ -1,16 +1,16 @@
-var Presenter = function(_extended) {
+var Presenter = function(extended) {
 
     var _Constructor = function(options) {
 
-        for (var _key in _extended) {
-            if (typeof _extended[_key] === "function") _Constructor.prototype[_key] = _extended[_key];
-            else _Constructor[_key] = _extended[_key];
+        for (var key in extended) {
+            if (typeof extended[key] === 'function') _Constructor.prototype[key] = extended[key];
+            else _Constructor[key] = extended[key];
         }
 
         this._actions = {};
 
 
-        if (typeof options === "object" && options.presenterMethods) this.mapViewFunctions(options, options.presenterMethods, options.presenterMethodsScope || this);
+        if (typeof options === 'object' && options.presenterMethods) this.mapViewFunctions(options, options.presenterMethods, options.presenterMethodsScope || this);
         this.init(options);
     };
 
@@ -20,18 +20,18 @@ var Presenter = function(_extended) {
 
         },
 
-        mapViewFunctions: function(_view, _functions, scope) {
+        mapViewFunctions: function(view, functions, scope) {
             var _this = this;
 
-            _functions.forEach(function(fn) {
-                if (typeof _this[fn] === "function") {
-                    _view[fn] = scope ? _this[fn].bind(scope) : _this[fn] ;
+            functions.forEach(function(fn) {
+                if (typeof _this[fn] === 'function') {
+                    view[fn] = scope ? _this[fn].bind(scope) : _this[fn] ;
                 } else {
                     throw new Error('Presenter->mapViewFunctions() requires an array of functions associated with a view, '+fn+' is not a valid method of presenter instance');
                 }
             });
 
-            return _view;
+            return view;
         },
 
 

@@ -20,7 +20,7 @@ Dispatcher.prototype = {
     */
     register: function(action, callback) {
 
-        if (typeof callback !== "function") throw new Error('Dispatcher-> register() requires both string and callback');
+        if (typeof callback !== 'function') throw new Error('Dispatcher-> register() requires both string and callback');
 
         if (!this.actions[action]) this.actions[action] = [callback];
         else this.actions[action].push(callback);
@@ -33,7 +33,7 @@ Dispatcher.prototype = {
       * @param callback (function)
     */
     unregister: function(action, callback) {
-        if (!this.actions[action]) throw new Error("Dispatcher->"+action+" is undefined");
+        if (!this.actions[action]) throw new Error('Dispatcher->'+action+' is undefined');
 
         if (!callback) this.actions[action] = [];
 
@@ -49,7 +49,7 @@ Dispatcher.prototype = {
 
         if (this.actions[action]) {
             this.actions[action].forEach(function(_action) {
-                if (typeof _action === "function") _action();
+                if (typeof _action === 'function') _action();
             });
         }
 
@@ -60,7 +60,7 @@ Dispatcher.prototype = {
       * @param action (string)
     */
     list: function(action) {
-        console.log("Dispatcher->"+action+"-> Callbacks :");
+        console.log('Dispatcher->'+action+'-> Callbacks :');
         this.actions[action].forEach(function(_action) {
             console.log(_action);
         });

@@ -3,19 +3,19 @@
            it stores its data in an attributes object andevery model declared is stored in a
            Nuff.models array for checking model instanceof in Collections fo rexample
   * @param name (string): holds the model's name for further reference
-  * @param _extended (object): holds data that will extend Model functionnality, all functions
+  * @param extended (object): holds data that will extend Model functionnality, all functions
            will be added to object prototype whereas values will be added to object itself
 */
-var Model = function (_name, _extended) {
+var Model = function (name, extended) {
 
      var _Constructor = function(_options) {
 
-        for (var _key in _extended) {
-            if (typeof _extended[_key] === "function") _Constructor.prototype[_key] = _extended[_key];
-            else _Constructor[_key] = _extended[_key];
+        for (var key in extended) {
+            if (typeof extended[key] === 'function') _Constructor.prototype[key] = extended[key];
+            else _Constructor[key] = extended[key];
         }
 
-        this._name = _name;
+        this.name = name;
         this._actions = {};
         this.attributes = {};
         this.set(_options);
@@ -35,9 +35,9 @@ var Model = function (_name, _extended) {
           * @param value (multitype) the value to set for a given attribute string
         */
         set: function(_data) {
-            if (typeof _data === "object")
+            if (typeof _data === 'object')
                 extend(this.attributes, _data);
-            else if (typeof _data === "string" && arguments.length>1) {
+            else if (typeof _data === 'string' && arguments.length>1) {
                 this.attributes[_data] = arguments[1];
             }
 
@@ -57,7 +57,7 @@ var Model = function (_name, _extended) {
           * @param attribute (string)
         */
         has: function(attribute) {
-            return typeof this.attributes[attribute] !== "undefined";
+            return typeof this.attributes[attribute] !== 'undefined';
         },
 
         attributeIs: function(attribute, validatorType) {
@@ -91,7 +91,7 @@ var Model = function (_name, _extended) {
 
     };
 
-    Nuff.models[_name] = _Constructor;
+    Nuff.models[name] = _Constructor;
 
     return _Constructor;
 

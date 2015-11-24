@@ -6,16 +6,16 @@
   * @param _extended (object): holds data and functions that will extend Collection functionnality
                                also holds model string reference for model type checking
 */
-var Collection = Nuff.Collection  = function(_extended) {
+var Collection = Nuff.Collection  = function(extended) {
 
 
-    var _Constructor =function() {
+    var _Constructor = function() {
 
-        if (!_extended.model || !Nuff.models[_extended.model]) throw new Error('Collection->model must be a valid Nuff.Model');
+        if (!extended.model || !Nuff.models[extended.model]) throw new Error('Collection->model must be a valid Nuff.Model');
 
         var _Collection = new Array();
 
-        extend (_Collection, _extended)
+        extend (_Collection, extended)
 
         /**
           * @desc Returns elements where Model.attributes.attribute is equal to value
@@ -40,7 +40,7 @@ var Collection = Nuff.Collection  = function(_extended) {
             */
             push: function() {
                 for (var i = 0, j = arguments.length; i<j; ++i) {
-                    if (!arguments[i] instanceof Nuff.models[_extended.model]) throw new Error('Collection->push must provide valid Nuff.Models');
+                    if (!arguments[i] instanceof Nuff.models[extended.model]) throw new Error('Collection->push must provide valid Nuff.Models');
                 }
                 return Array.prototype.push.apply(this,arguments);
             },
@@ -48,12 +48,12 @@ var Collection = Nuff.Collection  = function(_extended) {
             /**
               * @desc Sorts models in collection by attribute
               * @param attribute string
-              * @param order ">" || "<"
+              * @param order '>' || '<'
             */
             sortBy: function(attribute, order) {
                 if (_Collection[0]) {
 
-                    if (typeof _Collection[0].attributes[attribute] === "string") {
+                    if (typeof _Collection[0].attributes[attribute] === 'string') {
                         _Collection.sort(function(a,b) {
                             if(a.attributes[attribute] < b.attributes[attribute]) return -1;
                             if(a.attributes[attribute] > b.attributes[attribute]) return 1;
@@ -65,7 +65,7 @@ var Collection = Nuff.Collection  = function(_extended) {
                         });
                     }
 
-                    if (order === "<") return this;
+                    if (order === '<') return this;
                     else return _Collection.reverse();
 
                 }
@@ -84,7 +84,7 @@ var Collection = Nuff.Collection  = function(_extended) {
             },
 
             /**
-              * @desc Sets all models "attributeToset" to "value" in collection where "attribute" === "oldValue"
+              * @desc Sets all models 'attributeToset' to 'value' in collection where 'attribute' === 'oldValue'
               * @param attribute (string)
               * @param oldvalue
               * @param attributeToSet (string)
@@ -93,7 +93,7 @@ var Collection = Nuff.Collection  = function(_extended) {
             setWhere: function(attribute, oldValue, attributeToSet, value) {
 
 
-                if (typeof value === "undefined") {
+                if (typeof value === 'undefined') {
                     value = attributeToSet;
                     attributeToSet = attribute;
                 }
@@ -116,7 +116,7 @@ var Collection = Nuff.Collection  = function(_extended) {
             */
             deleteWhere: function(attribute, value) {
 
-                if (attribute==="index") {
+                if (attribute==='index') {
                     _Collection[value].destroy();
                     _Collection.splice(value, 1);
                 } else {
@@ -135,8 +135,8 @@ var Collection = Nuff.Collection  = function(_extended) {
             */
             toJSON: function() {
                 var _json = [];
-                _Collection.forEach(function(_model) {
-                    _json.push(_model.get());
+                _Collection.forEach(function(model) {
+                    _json.push(model.get());
                 });
                 return _json;
             },
@@ -148,10 +148,10 @@ var Collection = Nuff.Collection  = function(_extended) {
 
         extend (_Collection, _methods);
 
-        if (_extended.values) _Collection.push.apply(this, _extended.values);
+        if (extended.values) _Collection.push.apply(this, extended.values);
 
         return _Collection;
-        
+
     };
 
     return _Constructor;
