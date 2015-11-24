@@ -9,7 +9,7 @@
 var Collection = Nuff.Collection  = function(_extended) {
 
 
-    var Constructor =function() {
+    var _Constructor =function() {
 
         if (!_extended.model || !Nuff.models[_extended.model]) throw new Error('Collection->model must be a valid Nuff.Model');
 
@@ -84,21 +84,26 @@ var Collection = Nuff.Collection  = function(_extended) {
             },
 
             /**
-              * @desc Sets all models in collection where attribute === value
+              * @desc Sets all models "attributeToset" to "value" in collection where "attribute" === "oldValue"
               * @param attribute (string)
               * @param oldvalue
+              * @param attributeToSet (string)
               * @param value
             */
-            setWhere: function(attribute, oldValue, value) {
+            setWhere: function(attribute, oldValue, attributeToSet, value) {
 
-                var _attr = {};
-                _attr[attribute] = value;
+
+                if (typeof value === "undefined") {
+                    value = attributeToSet;
+                    attributeToSet = attribute;
+                }
+
 
                 //store because foreach returns undefined instead of array
                 var _models =_getWhere(attribute, oldValue, true);
 
                 _models.forEach(function(_model) {
-                     _model.set(_attr);
+                     _model.set(attributeToSet, value);
                  });
 
                  return _models;
@@ -146,7 +151,8 @@ var Collection = Nuff.Collection  = function(_extended) {
         if (_extended.values) _Collection.push.apply(this, _extended.values);
 
         return _Collection;
+        
     };
 
-    return Constructor;
+    return _Constructor;
 };

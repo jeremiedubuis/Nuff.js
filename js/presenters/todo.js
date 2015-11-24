@@ -12,11 +12,6 @@ presenters.todo = Nuff.Presenter({
         this.view = view;
         this.list = new collection();
 
-        // Binds presenter functions to view actions
-        this.mapViewFunctions(view,
-            ["taskDone", "add", "delete", "deleteDone"]
-        , this);
-
         this.onDispatch('todoList:update', function() {
             _this.view.setState({list: _this.list.toJSON() });
         });

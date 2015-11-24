@@ -366,11 +366,11 @@ Nuff.Router = Router;
 */
 var Model = function (_name, _extended) {
 
-     var _Model = function(_options) {
+     var _Constructor = function(_options) {
 
         for (var _key in _extended) {
-            if (typeof _extended[_key] === "function") _Model.prototype[_key] = _extended[_key];
-            else _Model[_key] = _extended[_key];
+            if (typeof _extended[_key] === "function") _Constructor.prototype[_key] = _extended[_key];
+            else _Constructor[_key] = _extended[_key];
         }
 
         this._name = _name;
@@ -380,7 +380,7 @@ var Model = function (_name, _extended) {
         this.init();
     };
 
-    _Model.prototype = {
+    _Constructor.prototype = {
 
         init: function() {
 
@@ -448,11 +448,13 @@ var Model = function (_name, _extended) {
         onDispatch: _onDispatch
 
     };
-    
-    Nuff.models[_name] = _Model;
 
-    return _Model;
+    Nuff.models[_name] = _Constructor;
+
+    return _Constructor;
+
 };
+
 Nuff.Model = Model;
 
 /**
@@ -466,7 +468,7 @@ Nuff.Model = Model;
 var Collection = Nuff.Collection  = function(_extended) {
 
 
-    var Constructor =function() {
+    var _Constructor =function() {
 
         if (!_extended.model || !Nuff.models[_extended.model]) throw new Error('Collection->model must be a valid Nuff.Model');
 
@@ -541,21 +543,26 @@ var Collection = Nuff.Collection  = function(_extended) {
             },
 
             /**
-              * @desc Sets all models in collection where attribute === value
+              * @desc Sets all models "attributeToset" to "value" in collection where "attribute" === "oldValue"
               * @param attribute (string)
               * @param oldvalue
+              * @param attributeToSet (string)
               * @param value
             */
-            setWhere: function(attribute, oldValue, value) {
+            setWhere: function(attribute, oldValue, attributeToSet, value) {
 
-                var _attr = {};
-                _attr[attribute] = value;
+
+                if (typeof value === "undefined") {
+                    value = attributeToSet;
+                    attributeToSet = attribute;
+                }
+
 
                 //store because foreach returns undefined instead of array
                 var _models =_getWhere(attribute, oldValue, true);
 
                 _models.forEach(function(_model) {
-                     _model.set(_attr);
+                     _model.set(attributeToSet, value);
                  });
 
                  return _models;
@@ -603,27 +610,29 @@ var Collection = Nuff.Collection  = function(_extended) {
         if (_extended.values) _Collection.push.apply(this, _extended.values);
 
         return _Collection;
+        
     };
 
-    return Constructor;
+    return _Constructor;
 };
 
 var Presenter = function(_extended) {
-    var Presenter = function(options) {
+
+    var _Constructor = function(options) {
 
         for (var _key in _extended) {
-            if (typeof _extended[_key] === "function") Presenter.prototype[_key] = _extended[_key];
-            else Presenter[_key] = _extended[_key];
+            if (typeof _extended[_key] === "function") _Constructor.prototype[_key] = _extended[_key];
+            else _Constructor[_key] = _extended[_key];
         }
 
         this._actions = {};
-        this._instances = [];
 
+
+        if (typeof options === "object" && options.presenterMethods) this.mapViewFunctions(options, options.presenterMethods, options.presenterMethodsScope || this);
         this.init(options);
-
     };
 
-    Presenter.prototype= {
+    _Constructor.prototype= {
 
         init: function(options) {
 
@@ -631,11 +640,12 @@ var Presenter = function(_extended) {
 
         mapViewFunctions: function(_view, _functions, scope) {
             var _this = this;
+
             _functions.forEach(function(fn) {
                 if (typeof _this[fn] === "function") {
                     _view[fn] = scope ? _this[fn].bind(scope) : _this[fn] ;
                 } else {
-                    throw new Error('Presenter->mapViewFunctions() requires an array of functions associated with a view');
+                    throw new Error('Presenter->mapViewFunctions() requires an array of functions associated with a view, '+fn+' is not a valid method of presenter instance');
                 }
             });
 
@@ -652,8 +662,10 @@ var Presenter = function(_extended) {
 
     };
 
-    return Presenter;
+    return _Constructor;
+
 };
+
 Nuff.Presenter = Presenter;
 
 return Nuff;

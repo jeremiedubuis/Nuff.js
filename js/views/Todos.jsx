@@ -3,6 +3,9 @@ var presenter = require('../presenters/todo.js');
 var Todos = React.createClass({
 
     getInitialState: function() {
+
+        this.presenterMethods = ["taskDone", "add", "delete", "deleteDone"];
+
         return {
             list: [],
             presenter: new presenter(this)

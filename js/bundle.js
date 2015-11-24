@@ -84,11 +84,6 @@ presenters.todo = Nuff.Presenter({
         this.view = view;
         this.list = new collection();
 
-        // Binds presenter functions to view actions
-        this.mapViewFunctions(view,
-            ["taskDone", "add", "delete", "deleteDone"]
-        , this);
-
         this.onDispatch('todoList:update', function() {
             _this.view.setState({list: _this.list.toJSON() });
         });
@@ -132,6 +127,9 @@ var presenter = require('../presenters/todo.js');
 var Todos = React.createClass({displayName: "Todos",
 
     getInitialState: function() {
+
+        this.presenterMethods = ["taskDone", "add", "delete", "deleteDone"];
+
         return {
             list: [],
             presenter: new presenter(this)

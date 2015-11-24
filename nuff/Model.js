@@ -8,11 +8,11 @@
 */
 var Model = function (_name, _extended) {
 
-     var _Model = function(_options) {
+     var _Constructor = function(_options) {
 
         for (var _key in _extended) {
-            if (typeof _extended[_key] === "function") _Model.prototype[_key] = _extended[_key];
-            else _Model[_key] = _extended[_key];
+            if (typeof _extended[_key] === "function") _Constructor.prototype[_key] = _extended[_key];
+            else _Constructor[_key] = _extended[_key];
         }
 
         this._name = _name;
@@ -22,7 +22,7 @@ var Model = function (_name, _extended) {
         this.init();
     };
 
-    _Model.prototype = {
+    _Constructor.prototype = {
 
         init: function() {
 
@@ -90,9 +90,11 @@ var Model = function (_name, _extended) {
         onDispatch: _onDispatch
 
     };
-    
-    Nuff.models[_name] = _Model;
 
-    return _Model;
+    Nuff.models[_name] = _Constructor;
+
+    return _Constructor;
+
 };
+
 Nuff.Model = Model;
