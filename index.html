@@ -41,7 +41,7 @@
 <a id="presenter" class="anchor" href="#presenter" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>Presenter</strong>
 </h4>
 
-<div class="highlight highlight-source-js"><pre>    <span class="pl-k">var</span> todo <span class="pl-k">=</span> Nuff.Presenter({
+<div class="highlight highlight-source-js"><pre>    <span class="pl-k">var</span> todo <span class="pl-k">=</span> <span class="pl-smi">Nuff</span>.<span class="pl-en">Presenter</span>({
       <span class="pl-en">init</span><span class="pl-k">:</span> <span class="pl-k">function</span>() { }
     });</pre></div>
 
@@ -55,7 +55,7 @@
 <a id="model" class="anchor" href="#model" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>Model</strong>
 </h4>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> Todo <span class="pl-k">=</span> Nuff.Model(<span class="pl-s"><span class="pl-pds">'</span>Todo<span class="pl-pds">'</span></span>, {
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> Todo <span class="pl-k">=</span> <span class="pl-smi">Nuff</span>.<span class="pl-en">Model</span>(<span class="pl-s"><span class="pl-pds">'</span>Todo<span class="pl-pds">'</span></span>, {
     attributes<span class="pl-k">:</span> {
         done<span class="pl-k">:</span> <span class="pl-c1">false</span>,
         text<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
@@ -81,7 +81,7 @@
 
 <p>A collection is an array that is extended with helper functions. It verifies that values push are instances of the collection's model attribute.</p>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> Todos <span class="pl-k">=</span> Nuff.Collection({
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> Todos <span class="pl-k">=</span> <span class="pl-smi">Nuff</span>.<span class="pl-en">Collection</span>({
     model<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Todo<span class="pl-pds">"</span></span>
 });</pre></div>
 
@@ -139,7 +139,7 @@
 
 <p>The validator is a simple tool to centralize type validation, it binds regex and tests values against them.</p>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-k">new</span> <span class="pl-en">Nuff.Validator</span>();</pre></div>
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> _validator <span class="pl-k">=</span> <span class="pl-smi">Nuff</span>.<span class="pl-en">Validator</span>();</pre></div>
 
 <p><strong>set(object: object)</strong>: overrides the regex object of the validator with customized RegExp,</p>
 
