@@ -8,11 +8,11 @@ var Todos = React.createClass({
 
         return {
             list: [],
-            presenter: new presenter(this)
+            presenter: presenter(this)
         };
     },
-
     render: function() {
+
         var _this = this;
 
         return <div className="todos">

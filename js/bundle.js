@@ -76,8 +76,7 @@ var collection = require('../collections/Todos.js');
 
 var presenters = {};
 
-presenters.todo = Nuff.Presenter({
-
+presenters.todo = Nuff.Presenter('Todo', {
     init: function(view) {
 
         var _this = this;
@@ -132,11 +131,11 @@ var Todos = React.createClass({displayName: "Todos",
 
         return {
             list: [],
-            presenter: new presenter(this)
+            presenter: presenter(this)
         };
     },
-
     render: function() {
+
         var _this = this;
 
         return React.createElement("div", {className: "todos"}, 

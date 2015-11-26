@@ -7,7 +7,8 @@
 var Nuff = function() {
 
     var Nuff = {
-        models: []
+        models: [],
+        presenterInstances: []
     };
 
 /**
@@ -612,7 +613,9 @@ var Collection = Nuff.Collection  = function(extended) {
     return _Constructor;
 };
 
-var Presenter = function(extended) {
+var Presenter = function(name, extended) {
+
+
 
     var _Constructor = function(options) {
 
@@ -622,10 +625,11 @@ var Presenter = function(extended) {
         }
 
         this._actions = {};
-
+        this.presenterName = name;
 
         if (typeof options === 'object' && options.presenterMethods) this.mapViewFunctions(options, options.presenterMethods, options.presenterMethodsScope || this);
         this.init(options);
+        Nuff.presenterInstances[name] = this;
     };
 
     _Constructor.prototype= {
@@ -658,7 +662,16 @@ var Presenter = function(extended) {
 
     };
 
-    return _Constructor;
+
+    if (typeof extended.singleton !== "undefined" && !extended.singleton)
+        return _Constructor;
+    else return function(options) {
+        if (!Nuff.presenterInstances[name]) {
+            return new _Constructor(options);
+        } else {
+            return Nuff.presenterInstances[name];
+        }
+    };
 
 };
 

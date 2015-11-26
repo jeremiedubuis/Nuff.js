@@ -7,5 +7,6 @@
 var Nuff = function() {
 
     var Nuff = {
-        models: []
+        models: [],
+        presenterInstances: []
     };

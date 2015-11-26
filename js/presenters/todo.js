@@ -4,8 +4,7 @@ var collection = require('../collections/Todos.js');
 
 var presenters = {};
 
-presenters.todo = Nuff.Presenter({
-
+presenters.todo = Nuff.Presenter('Todo', {
     init: function(view) {
 
         var _this = this;
