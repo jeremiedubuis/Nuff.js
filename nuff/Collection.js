@@ -9,7 +9,7 @@
 var Collection = Nuff.Collection  = function(extended) {
 
 
-    var _Constructor = function() {
+    var Collection = function() {
 
         if (!extended.model || !Nuff.models[extended.model]) throw new Error('Collection->model must be a valid Nuff.Model');
 
@@ -29,7 +29,7 @@ var Collection = Nuff.Collection  = function(extended) {
             for (var i = 0, j = _Collection.length; i<j; ++i) {
                 if (_Collection[i].attributes[attribute] === value) _vals.push((model ? _Collection[i] :  i));
             }
-
+            
             return _vals;
         };
 
@@ -154,5 +154,5 @@ var Collection = Nuff.Collection  = function(extended) {
 
     };
 
-    return _Constructor;
+    return Collection;
 };

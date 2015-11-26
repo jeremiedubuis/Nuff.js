@@ -363,11 +363,11 @@ Nuff.Router = Router;
 */
 var Model = function (name, extended) {
 
-     var _Constructor = function(_options) {
+     var Model = function(_options) {
 
         for (var key in extended) {
-            if (typeof extended[key] === 'function') _Constructor.prototype[key] = extended[key];
-            else _Constructor[key] = extended[key];
+            if (typeof extended[key] === 'function') Model.prototype[key] = extended[key];
+            else Model[key] = extended[key];
         }
 
         this.name = name;
@@ -377,7 +377,7 @@ var Model = function (name, extended) {
         this.init();
     };
 
-    _Constructor.prototype = {
+    Model.prototype = {
 
         init: function() {
 
@@ -446,9 +446,9 @@ var Model = function (name, extended) {
 
     };
 
-    Nuff.models[name] = _Constructor;
+    Nuff.models[name] = Model;
 
-    return _Constructor;
+    return Model;
 
 };
 
@@ -465,7 +465,7 @@ Nuff.Model = Model;
 var Collection = Nuff.Collection  = function(extended) {
 
 
-    var _Constructor = function() {
+    var Collection = function() {
 
         if (!extended.model || !Nuff.models[extended.model]) throw new Error('Collection->model must be a valid Nuff.Model');
 
@@ -485,7 +485,7 @@ var Collection = Nuff.Collection  = function(extended) {
             for (var i = 0, j = _Collection.length; i<j; ++i) {
                 if (_Collection[i].attributes[attribute] === value) _vals.push((model ? _Collection[i] :  i));
             }
-
+            
             return _vals;
         };
 
@@ -610,32 +610,47 @@ var Collection = Nuff.Collection  = function(extended) {
 
     };
 
-    return _Constructor;
+    return Collection;
 };
 
 var Presenter = function(name, extended) {
 
 
 
-    var _Constructor = function(options) {
+    var Presenter = function(options) {
+
 
         for (var key in extended) {
-            if (typeof extended[key] === 'function') _Constructor.prototype[key] = extended[key];
-            else _Constructor[key] = extended[key];
+            if (typeof extended[key] === 'function') Presenter.prototype[key] = extended[key];
+            else Presenter[key] = extended[key];
         }
 
-        this._actions = {};
         this.presenterName = name;
-
-        if (typeof options === 'object' && options.presenterMethods) this.mapViewFunctions(options, options.presenterMethods, options.presenterMethodsScope || this);
-        this.init(options);
         Nuff.presenterInstances[name] = this;
+
+        this._actions = {};
+        this._init(options);
+
     };
 
-    _Constructor.prototype= {
+    Presenter.prototype= {
+
+        _init: function(options) {
+            this.destroy();
+            if (typeof options === 'object' && options.presenterMethods) this.bindMethodsToView(options, options.presenterMethods);
+            this.init(options);
+            return this;
+        },
 
         init: function(options) {
 
+        },
+
+        bindMethodsToView: function(view, presenterMethods) {
+            if (view)
+                this.mapViewFunctions(view, presenterMethods, view.presenterMethodsScope || this);
+
+            return this;
         },
 
         mapViewFunctions: function(view, functions, scope) {
@@ -663,13 +678,13 @@ var Presenter = function(name, extended) {
     };
 
 
-    if (typeof extended.singleton !== "undefined" && !extended.singleton)
-        return _Constructor;
+    if (extended && typeof extended.singleton !== "undefined" && !extended.singleton)
+        return Presenter;
     else return function(options) {
         if (!Nuff.presenterInstances[name]) {
-            return new _Constructor(options);
+            return new Presenter(options);
         } else {
-            return Nuff.presenterInstances[name];
+            return Nuff.presenterInstances[name]._init(options);
         }
     };
 
