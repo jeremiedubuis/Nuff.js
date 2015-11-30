@@ -7,14 +7,14 @@ var Router = function() {
 };
 
 Router.prototype = {
-				
-				/**
-				  * @desc registers a new callback to a hash string
-				  * @param route(string) : the route string to which a callback will be bound
-				  * @param callback(function)
-				  * @param scope(object) the context for which callback will be called
-				  @param listen(bool) : defines weather callbach should be fired on hashchange
-				*/
+
+	/**
+	  * @desc registers a new callback to a hash string
+	  * @param route(string) : the route string to which a callback will be bound
+	  * @param callback(function)
+	  * @param scope(object) the context for which callback will be called
+	  * @param listen(bool) : defines weather callbach should be fired on hashchange
+	*/
     register: function(route, callback, scope, listen) {
         if (route && typeof callback==='function') {
 
@@ -61,19 +61,20 @@ Router.prototype = {
         this.eventListeners.splice(_index, 1);
     },
 
-				/**
-				  * @desc removes callback from registered route
-				  * @param route(string)
-				*/
+	/**
+	  * @desc removes callback from registered route
+	  * @param route(string)
+	*/
     unregister: function(route) {
         delete this.routes[route];
         return this;
     },
-				/**
-				  * @desc sets the page hash, if silent is true it will not trigger callbacks
-				  * @param route(string)
-				  * @ param silent(bool): if true won't fire route callbacks
-				*/
+
+	/**
+	  * @desc sets the page hash, if silent is true it will not trigger callbacks
+	  * @param route(string)
+	  * @param silent(bool): if true won't fire route callbacks
+	*/
     setRoute: function(route, _silent) {
 
         window.location.hash = route;

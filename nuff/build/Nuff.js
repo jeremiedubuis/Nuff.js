@@ -273,6 +273,9 @@ var _removeDispatchListeners = function() {
     }
 };
 
+/**
+  * @desc the router provides a simple linking system between hashes and callbacks
+*/
 var Router = function() {
     this.routes = [];
     this.eventListeners = [];
@@ -280,6 +283,13 @@ var Router = function() {
 
 Router.prototype = {
 
+	/**
+	  * @desc registers a new callback to a hash string
+	  * @param route(string) : the route string to which a callback will be bound
+	  * @param callback(function)
+	  * @param scope(object) the context for which callback will be called
+	  * @param listen(bool) : defines weather callbach should be fired on hashchange
+	*/
     register: function(route, callback, scope, listen) {
         if (route && typeof callback==='function') {
 
@@ -326,11 +336,20 @@ Router.prototype = {
         this.eventListeners.splice(_index, 1);
     },
 
+	/**
+	  * @desc removes callback from registered route
+	  * @param route(string)
+	*/
     unregister: function(route) {
         delete this.routes[route];
         return this;
     },
 
+	/**
+	  * @desc sets the page hash, if silent is true it will not trigger callbacks
+	  * @param route(string)
+	  * @param silent(bool): if true won't fire route callbacks
+	*/
     setRoute: function(route, _silent) {
 
         window.location.hash = route;
@@ -673,6 +692,12 @@ var Presenter = function(name, extended) {
             return this;
         },
 
+		/**
+		  * @desc maps presenter methods to view obect with scope if defined
+		  * @param view (object)
+		  * @param functions (array)
+		  * @param scope (object)
+		*/
         mapViewFunctions: function(view, functions, scope) {
             var _this = this;
 
