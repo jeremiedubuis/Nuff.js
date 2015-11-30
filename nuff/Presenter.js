@@ -58,6 +58,12 @@ var Presenter = function(name, extended) {
             return this;
         },
 
+							/**
+							  * @desc maps presenter methods to view obect with scope if defined
+							  * @param view (object)
+							  * @param functions (array)
+							  * @param scope (object)
+							*/
         mapViewFunctions: function(view, functions, scope) {
             var _this = this;
 
