@@ -1,15 +1,12 @@
+var TodoModel = require('../models/Todo.js');
+var TodosCollection = require('../collections/Todos.js');
 
-var model = require('../models/Todo.js');
-var collection = require('../collections/Todos.js');
-
-var presenters = {};
-
-presenters.todo = Nuff.Presenter('Todo', {
+var TodoPresenter = Nuff.Presenter('Todo', {
     init: function(view) {
 
         var _this = this;
         this.view = view;
-        this.list = new collection();
+        this.list = new TodosCollection();
 
         this.onDispatch('todoList:update', function() {
             _this.view.setState({list: _this.list.toJSON() });
@@ -20,7 +17,7 @@ presenters.todo = Nuff.Presenter('Todo', {
     add: function(_text) {
 
         this.list.push(
-            new model({
+            new TodoModel({
                 text: _text
             })
         );
@@ -38,7 +35,7 @@ presenters.todo = Nuff.Presenter('Todo', {
         this.dispatch("todoList:update");
     },
 
-    deleteDone: function() {
+    clearDone: function() {
 
         this.list.deleteWhere('done', true);
         this.dispatch("todoList:update");
@@ -46,4 +43,4 @@ presenters.todo = Nuff.Presenter('Todo', {
 
 });
 
-module.exports = presenters.todo;
+module.exports = TodoPresenter;

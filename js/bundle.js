@@ -54,8 +54,7 @@ c=m+o(s,g),v+=u(s,c,n,r);else{var y=p(e);if(y){var C,b=y.call(e);if(y!==e.entrie
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],5:[function(require,module,exports){
-var models = {};
-models.Todo = Nuff.Model('Todo', {
+var Todo = Nuff.Model('Todo', {
     attributes: {
         done: false,
         text: ""
@@ -67,21 +66,18 @@ models.Todo = Nuff.Model('Todo', {
 
 });
 
-module.exports = models.Todo;
+module.exports = Todo;
 
 },{}],6:[function(require,module,exports){
+var TodoModel = require('../models/Todo.js');
+var TodosCollection = require('../collections/Todos.js');
 
-var model = require('../models/Todo.js');
-var collection = require('../collections/Todos.js');
-
-var presenters = {};
-
-presenters.todo = Nuff.Presenter('Todo', {
+var TodoPresenter = Nuff.Presenter('Todo', {
     init: function(view) {
 
         var _this = this;
         this.view = view;
-        this.list = new collection();
+        this.list = new TodosCollection();
 
         this.onDispatch('todoList:update', function() {
             _this.view.setState({list: _this.list.toJSON() });
@@ -92,7 +88,7 @@ presenters.todo = Nuff.Presenter('Todo', {
     add: function(_text) {
 
         this.list.push(
-            new model({
+            new TodoModel({
                 text: _text
             })
         );
@@ -110,7 +106,7 @@ presenters.todo = Nuff.Presenter('Todo', {
         this.dispatch("todoList:update");
     },
 
-    deleteDone: function() {
+    clearDone: function() {
 
         this.list.deleteWhere('done', true);
         this.dispatch("todoList:update");
@@ -118,7 +114,7 @@ presenters.todo = Nuff.Presenter('Todo', {
 
 });
 
-module.exports = presenters.todo;
+module.exports = TodoPresenter;
 
 },{"../collections/Todos.js":2,"../models/Todo.js":5}],7:[function(require,module,exports){
 var presenter = require('../presenters/todo.js');
@@ -127,7 +123,7 @@ var Todos = React.createClass({displayName: "Todos",
 
     getInitialState: function() {
 
-        this.presenterMethods = ["taskDone", "add", "delete", "deleteDone"];
+        this.presenterMethods = ["taskDone", "add", "delete", "clearDone"];
 
         return {
             list: [],
@@ -157,8 +153,9 @@ var Todos = React.createClass({displayName: "Todos",
                 
             ), 
             React.createElement("button", {class: "clear", 
-                onClick: _this.deleteDone}, 
-                "Clear done")
+                onClick: _this.clearDone}, 
+                "Clear done"
+            )
         )
 
     },

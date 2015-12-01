@@ -4,7 +4,7 @@ var Todos = React.createClass({
 
     getInitialState: function() {
 
-        this.presenterMethods = ["taskDone", "add", "delete", "deleteDone"];
+        this.presenterMethods = ["taskDone", "add", "delete", "clearDone"];
 
         return {
             list: [],
@@ -34,8 +34,9 @@ var Todos = React.createClass({
                 }
             </ul>
             <button class="clear"
-                onClick={_this.deleteDone}>
-                Clear done</button>
+                onClick={_this.clearDone}>
+                Clear done
+            </button>
         </div>
 
     },

@@ -1,5 +1,4 @@
-var models = {};
-models.Todo = Nuff.Model('Todo', {
+var Todo = Nuff.Model('Todo', {
     attributes: {
         done: false,
         text: ""
@@ -11,4 +10,4 @@ models.Todo = Nuff.Model('Todo', {
 
 });
 
-module.exports = models.Todo;
+module.exports = Todo;
