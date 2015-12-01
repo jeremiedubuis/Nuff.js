@@ -163,13 +163,20 @@ Dispatcher.prototype = {
       * @desc  Registers a callback to a string, when dispatched callback is fired
       * @param action (string) : the dispatch to which the callback will be bound
       * @param callback (function)
+      * @param scope (object) : callback scope
     */
-    register: function(action, callback) {
+    register: function(action, callback, scope) {
 
         if (typeof callback !== 'function') throw new Error('Dispatcher-> register() requires both string and callback');
 
-        if (!this.actions[action]) this.actions[action] = [callback];
-        else this.actions[action].push(callback);
+        if (!this.actions[action]) this.actions[action] = [{
+            scope: scope,
+            callback: callback
+        }];
+        else this.actions[action].push({
+            scope: scope,
+            callback: callback
+        });
 
     },
 
@@ -195,7 +202,10 @@ Dispatcher.prototype = {
 
         if (this.actions[action]) {
             this.actions[action].forEach(function(_action) {
-                if (typeof _action === 'function') _action();
+                if (typeof _action.callback === 'function') {
+                    if (_action.scope) _action.callback.call(_action.scope);
+                    else _action.callback();
+                }
             });
         }
 
@@ -208,7 +218,7 @@ Dispatcher.prototype = {
     list: function(action) {
         console.log('Dispatcher->'+action+'-> Callbacks :');
         this.actions[action].forEach(function(_action) {
-            console.log(_action);
+            console.log(_action.callback);
         });
     }
 
@@ -237,12 +247,15 @@ var _dispatch = function(_action) {
   * @param _action(string)
   * @param callback(function)
 */
-var _onDispatch = function(_action, callback) {
+var _onDispatch = function(_action, callback, scope) {
 
     if (!this._actions[_action]) this._actions[_action] = [];
 
-    this._actions[_action].push(callback)
-    Nuff.Dispatcher().register(_action, callback);
+    this._actions[_action].push({
+        scope: scope,
+        callback: callback
+    });
+    Nuff.Dispatcher().register(_action, callback, scope);
 
     return this;
 
