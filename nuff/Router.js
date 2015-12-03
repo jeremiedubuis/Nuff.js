@@ -1,6 +1,8 @@
 /**
   * @desc the router provides a simple linking system between hashes and callbacks
 */
+var registeredRouter;
+
 var Router = function() {
     this.routes = [];
     this.eventListeners = [];
@@ -95,4 +97,7 @@ Router.prototype = {
 
 };
 
-Nuff.Router = Router;
+Nuff.Router = function() {
+    if (!registeredRouter) registeredRouter = new Router();
+    return registeredRouter;
+};
