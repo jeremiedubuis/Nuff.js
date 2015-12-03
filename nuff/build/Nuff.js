@@ -197,14 +197,15 @@ Dispatcher.prototype = {
     /**
       * @desc  Fires every  registered callbacks associated with a string
       * @param action (string) : the dispatch key to trigger on
+      * @param object (object) :an object that will be passed as a paramater to the callback
     */
-    dispatch: function(action) {
+    dispatch: function(action, object) {
 
         if (this.actions[action]) {
             this.actions[action].forEach(function(_action) {
                 if (typeof _action.callback === 'function') {
-                    if (_action.scope) _action.callback.call(_action.scope);
-                    else _action.callback();
+                    if (_action.scope) _action.callback.bind(_action.scope, object);
+                    else _action.callback(object);
                 }
             });
         }
@@ -237,8 +238,8 @@ Nuff.Dispatcher = function() {
   * @desc Dispatches as string so that all associated callbacks are fired
   * @param _action(string)
 */
-var _dispatch = function(_action) {
-    Nuff.Dispatcher().dispatch(_action);
+var _dispatch = function(_action, object) {
+    Nuff.Dispatcher().dispatch(_action, object);
 
 };
 
