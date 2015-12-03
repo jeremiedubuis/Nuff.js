@@ -382,6 +382,16 @@ Router.prototype = {
             return this;
 
         }
+    },
+
+    /**
+      * @desc Sets current route from windo hash
+    */
+    setFromHash: function(defaultRoute) {
+        var _hash = window.location.hash.replace('#','') ;
+
+        if (this.routes[_hash]) this.setRoute( _hash );
+        else if (defaultRoute) this.setRoute( defaultRoute );
     }
 
 };
